@@ -38,8 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_twilio',
     'homepage',
     'adminpanel',
+    'userprofile',
+    'products',
+    'catagory',
+    'mycart',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -103,6 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'userprofile.Account'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -135,3 +143,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/admin'
+
+ACCOUNT_SID='AC26b24450d1a71613d6d8d059f5fdcb2e'
+AUTH_TOKEN='afebc6ea73332eaad1b311419b7b292c'
+COUNTRY_CODE='+91'
+TWILIO_PHONE_NUMBER='+17262274150'

@@ -1,0 +1,84 @@
+{% extends 'ad/adminbase.html' %}
+{% block content %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Catagory Management</h2>
+                </div>
+                <br>
+
+                <div>
+                    <a href="{%url 'addcatagory' %}" class="btn btn-primary btn-sm rounded">Add Catagory</a>
+                    <a href="{%url 'addsubcatagory' %}" class="btn btn-primary btn-sm rounded">Add Sub-Catagory</a>
+                </div>
+            </div>
+            <div class="card mb-4">
+                {% for ob in cat %}
+                <div class="card-body">
+                    <article class="itemlist">
+                        <div class="row align-items-center">
+                            
+                            <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                                <div class="info">
+                                    <h4 class="mb-0">{{ ob.catagory_name }}</h4>
+                                </div>
+                                {% for ob2 in sub %}
+                                {% if ob2.catagories|stringformat:'s' == ob.catagory_name|stringformat:'s' %}
+                                <div>
+                                    <a href="{%url 'editsubcatagory' ob2.id %}"><h6 class="mb-0">{{ ob2.subcatagory_name }}</h6></a>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                         
+                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                                <a href="{%url 'editcatagory' ob.id %}" class="btn btn-sm font-sm rounded btn-brand">
+                                    <i class="material-icons md-edit"></i> Edit
+                                </a>
+                                <a onclick="deletecat({{ob.id}},'{{ob.catagory_name}}')" class="btn btn-sm font-sm btn-light rounded">Delete</a>
+                            </div>
+                        </div> <!-- row .// -->
+
+                   
+                 
+                </div> <!-- card-body end// -->
+                {% endfor %} 
+                <script>
+                    function deletecat(id,catagory_name){
+                        swal({
+                            title: "Confirm Delete " + catagory_name,
+                            text: "",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                          })
+                          .then((willDelete) => {
+                            if (willDelete) {
+                              swal(catagory_name + " Deleted", {
+                                icon: "success",  
+                              }).then(()=>{ window.location.href = "/admin/deletecatagory/"+id
+                            })
+                            } else {
+                                swal(catagory_name + " Not Deleted", {icon: "error"});
+                            }
+                          });
+                        }
+                </script>
+            </div> <!-- card end// -->
+            <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+     
+
+{% endblock %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

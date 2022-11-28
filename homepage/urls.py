@@ -3,5 +3,5 @@ from django.urls import path
 
 urlpatterns = [
     path('',views.home, name="home"),
-    path('', views.ads, name='products'),
+    path('viewprod/<str:id>/', views.view_prod, name= "viewprod"),
 ]

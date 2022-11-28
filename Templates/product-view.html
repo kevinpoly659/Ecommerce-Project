@@ -1,0 +1,190 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-right.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:25:55 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/imgs/theme/favicon.svg" %}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{% static "assets/css/main.css" %}">
+</head>
+<body>
+    <!-- Quick view -->
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Fashion
+                    <span></span> Abstract Print Patchwork Dress
+                </div>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="product-detail accordion-detail">
+                            <div class="row mb-50">
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="detail-gallery">
+                                        <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                        <!-- MAIN SLIDES -->
+                                        <div class="product-image-slider">
+                                            <figure class="border-radius-10">
+                                                <img src="{{ view.image.url }}" alt="product image">
+                                            </figure>
+                                            <figure class="border-radius-10">
+                                                <img src="{{ view.image2.url }}" alt="product image">
+                                            </figure>
+                                            <figure class="border-radius-10">
+                                                <img src="{{ view.image3.url }}" alt="product image">
+                                            </figure>
+                                            <figure class="border-radius-10">
+                                                <img src="{{ view.image4.url }}" alt="product image">
+                                            </figure>
+                                        </div>
+                                        <!-- THUMBNAILS -->
+                                        <div class="slider-nav-thumbnails pl-15 pr-15">
+                                            <div><img src="{{ view.image.url }}" alt="product image"></div>
+                                            <div><img src="{{ view.image2.url }}" alt="product image"></div>
+                                            <div><img src="{{ view.image3.url }}" alt="product image"></div>
+                                            <div><img src="{{ view.image4.url }}" alt="product image"></div>
+                                        </div>
+                                    </div>
+                                    <!-- End Gallery -->
+                                    <div class="social-icons single-share">
+                                        <ul class="text-grey-5 d-inline-block">
+                                            <li><strong class="mr-10">Share this:</strong></li>
+                                            <li class="social-facebook"><a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
+                                            <li class="social-twitter"> <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
+                                            <li class="social-instagram"><a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a></li>
+                                            <li class="social-linkedin"><a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="detail-info">
+                                        <h3 class="title-detail mt-30">{{ view.name }}</h3>
+                                        <div class="product-detail-rating">
+                                            <div class="pro-details-brand">
+                                                <span> Brands: <a href="shop-grid-right.html">{{ view.brand.brand_name }}</a></span>
+                                            </div>
+                                            <div class="product-rate-cover text-end">
+                                                <div class="product-rate d-inline-block">
+                                                    <div class="product-rating" style="width:90%">
+                                                    </div>
+                                                </div>
+                                                <span class="font-small ml-5 text-muted"> (25 reviews)</span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix product-price-cover">
+                                            <div class="product-price primary-color float-left">
+                                                <ins><span class="text-brand">Rs.{{ view.price }}</span></ins>
+                                            </div>
+                                        </div>
+                                        <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                        <div class="short-desc mb-30">
+                                            <p class="font-sm">{{ view.description }}</p>
+                                        </div>
+                                    <form action="{%url 'addcart' view.id %}" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="attr-detail attr-size col-3">
+                                            <strong class="mr-10">Size</strong>
+                                            <select class="form-select" name="size">
+                                            <ul class="list-filter size-filter font-small">
+                                                {% if view.sizeS > 0 %}
+                                                <option>S</option>
+                                                {% endif %} 
+                                                
+                                                {% if view.sizeM > 0 %}
+                                                <option>M</option>
+                                                {% endif %} 
+                                                
+                                                {% if view.sizeL > 0 %}
+                                                <option>L</option>
+                                                {% endif %} 
+                                                
+                                                {% if view.sizeXL > 0 %}
+                                                <option>XL</option>
+                                                {% endif %} 
+                                                
+                                                {% if view.sizeXXL > 0 %}
+                                                <option>XXL</option>
+                                                {% endif %}
+                                            </ul>
+                                            </select>
+                                        </div>
+                                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                        <div class="detail-extralink">
+                                            <div class="detail-qty border radius">
+                                                <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                                <span id = "qtyinput" class="qty-val">1</span>
+                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                <input id="qty" hidden type="text" name="qty">
+                                            </div>
+                                            <div class="product-extra-link2">
+                                                <button onclick="input()" class="btn btn-md rounded font-sm hover-up" type="submit">Add to Cart</button>
+                                            </div>
+                                            <div class="product-extra-link2">
+                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                        <script>
+                                            function input()
+                                            {
+                                                document.getElementById("qty").value = document.getElementById("qtyinput").innerHTML;
+                                            }
+                                        </script>
+                                        <ul class="product-meta font-xs color-grey mt-50">
+                                            <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
+                                            <li>Availability:<span class="in-stock text-success ml-5">8 Items In Stock</span></li>
+                                        </ul>
+                                    </div>
+                                    <!-- Detail Info -->
+                                </div>
+                            </div>
+                          
+                          
+                        </div>
+                    </div>
+                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                       
+                        <!-- Product sidebar Widget -->
+                
+                        <div class="banner-img wow fadeIn mb-45 animated d-lg-block d-none">
+                            <img src="{% static "assets/imgs/banner/banner-11.jpg" %}" alt="">
+                            <div class="banner-text">
+                                <span>Women Zone</span>
+                                <h4>Save 17% on <br>Office Dress</h4>
+                                <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-right.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:01 GMT -->
+</html>
+{% endblock %}

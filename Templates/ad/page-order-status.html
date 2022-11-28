@@ -1,0 +1,22 @@
+{% extends 'ad/adminbase.html' %}
+{% block content %}
+
+<section>
+<form action="{%url 'statuschange' orders.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+<div class="col-sm-6 mb-3">
+    <label class="form-label">Status</label>
+    <select class="form-select" name="status">
+        <option>Confirmed</option>
+        <option>Shipped</option>
+        <option>Out_for_delivery</option>
+        <option>Delivered</option>
+        <option>Cancelled</option>
+        <option>Returned</option>
+    </select>
+</div>
+</form>
+
+</section>
+
+{% endblock %}

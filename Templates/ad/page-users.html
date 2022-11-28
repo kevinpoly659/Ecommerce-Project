@@ -1,0 +1,100 @@
+{% extends 'ad/adminbase.html' %}
+{% block content %}
+
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">User List </h2>
+                </div>
+            </div>
+            <div class="card mb-4">
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Active Status</th>
+                                    <th scope="col" class="text-end"> Action </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ob in users %}
+                                {% if not ob.is_superuser %}
+                                <tr>
+                                    <td>{{ ob.id }}</td>
+                                    <td><b>{{ ob.first_name }}</b></td>
+                                    <td><b>{{ ob.last_name }}</b></td>                                    
+                                    <td><b>{{ ob.email }}</b></td>      
+                                    <td><b>{{ ob.phone_number }}</b></td>                                    
+                                    <td><b>{{ ob.is_active }}</b></td>      
+                                    {% if ob.is_active %}                              
+                                    <td class="text-end">
+                                        <a class="btn btn-md rounded font-sm" onclick="block({{ob.id}},'{{ob.first_name}}')">Block</a>
+                                        <!-- dropdown //end -->
+                                    </td>
+                                    {% else %}
+                                    <td class="text-end">
+                                        <a class="btn btn-md rounded font-sm" onclick="unblock({{ob.id}},'{{ob.first_name}}')">Un-Block</a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endif %}
+                                {% endfor %}  
+                            </tbody>
+                        </table>
+                        <script>
+                            function block(id,first_name){
+                                swal({
+                                    title: "Confirm Block " + first_name,
+                                    text: "",
+                                    icon: "warning",
+                                    buttons: true,
+                                    dangerMode: true,
+                                  })
+                                  .then((willDelete) => {
+                                    if (willDelete) {
+                                      swal(first_name + " Blocked", {
+                                        icon: "success",  
+                                      }).then(()=>{ window.location.href = "/admin/blockuser/"+id
+                                    })
+                                    } else {
+                                        swal(first_name + " not Blocked", {icon: "error"});
+                                    }
+                                  });
+                                }
+                    
+                                function unblock(id,first_name){
+                                    swal({
+                                        title: "Confirm Unblock " + first_name,
+                                        text: "",
+                                        icon: "warning",
+                                        buttons: true,
+                                        dangerMode: true,
+                                      })
+                                      .then((willDelete) => {
+                                        if (willDelete) {
+                                          swal(first_name + " Unblocked", {
+                                            icon: "success",  
+                                          }).then(()=>{ window.location.href = "/admin/unblockuser/"+id
+                                        })
+                                        } else {
+                                          swal(first_name + " not Unblocked", {icon: "error"});
+                                        }
+                                      });
+                                    }
+                    
+                        </script>
+
+
+                    </div> <!-- table-responsive //end -->
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+            
+        </section> <!-- content-main end// -->
+{% endblock %}
