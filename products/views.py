@@ -11,9 +11,12 @@ def product(request, id1, id2):
     if id1 == "None":
         inst = sub_catagories.objects.get(subcatagory_name=id2)
         ob1 = products.objects.filter(sub_catagory=inst)
+        inst2 = None
+        
 
     elif id2 == "None":
         inst = catagories.objects.get(catagory_name=id1)
+        inst2 = sub_catagories.objects.filter(catagories=inst)
         ob1 = products.objects.filter(catagory=inst)
         
-    return render(request,'products.html',{'cntx': ob1})
+    return render(request,'products.html',{'cntx': ob1,'inst':inst2})

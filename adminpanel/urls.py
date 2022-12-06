@@ -20,7 +20,18 @@ urlpatterns = [
     path('blockuser/<int:id>',views.block_user, name="block"),
     path('unblockuser/<int:id>',views.unblock_user, name="unblock"),
     path('orders/',views.admin_orders,name="adminorders"),
-    path('orderdetails/<int:id>',views.admin_order_details, name="orderdetails"),\
-    path('orderstatus/<int:id>',views.order_status_change, name="statuschange")
+    path('orderdetails/<int:id>',views.admin_order_details, name="orderdetails"),
+    path('orderstatus/<int:id>',views.order_status_change, name="statuschange"),
+    path('salesreport', views.sales_report, name="salesreport"),
+    path('monthlysales', views.monthly_sales, name="monthlysales"),
+    path('yearly_sales', views.yearly_sales,  name="yearlysales"),
+    path('', views.main_view, name="main-view"),
+    path('coupon/', views.admin_coupon, name="coupon"),
+    path('addcoupon', views.add_coupon, name="addcoupon"),
+    path('offers/',views.admin_offers,name="offers"),
+    path('add_product_offer/',views.add_product_offer,name="add_product_offer"),
+    path('delete_product_offer/<int:id>',views.delete_product_offer,name="delete_product_offer"),
+    path('add_catagory_offer/',views.add_catagory_offer,name="add_catagory_offer"),
+    path('delete_catagory_offer/<int:id>', views.delete_catagory_offer,name="delete_catagory_offer"),
 ]
 

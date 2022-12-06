@@ -24,39 +24,39 @@
                                     <h4><strong>Order Cancelled by user</strong></h4>
                                 </div>
                             {% elif orders.status != 'Returned' %}
-                                <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200" name="status">
+
                                 {% if orders.status == 'Confirmed' %}    
-                                    <option selected >Confirmed</option>
-                                {% else %}
-                                <option>Confirmed</option>
+                                <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200" name="status">
+                                <option>Shipped</option>
+                                <option>Cancelled</option>
+                                </select>
                                 {% endif %} 
 
+
                                 {% if orders.status == 'Shipped' %}    
-                                    <option selected >Shipped</option>
-                                {% else %}
-                                <option>Shipped</option>
+                                <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200" name="status">
+                                <option>Out_for_delivery</option>
+                                <option>Cancelled</option>
+                                </select>
                                 {% endif %}
 
                                 {% if orders.status == 'Out_for_delivery' %}    
-                                <option selected >Out_for_delivery</option>
-                                {% else %}
-                                <option>Out_for_delivery</option>
+                                <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200" name="status">
+                                <option>Delivered</option>
+                                <option>Cancelled</option>
+                                </select>
                                 {% endif %}
 
                                 {% if orders.status == 'Delivered' %}    
-                                <option selected >Delivered</option>
-                                {% else %}
-                                <option>Delivered</option>
+                                
+                                <div>
+                                    <h4><strong>Order Delivered</strong></h4>
+                                </div>
                                 {% endif %}
 
-                                {% if orders.status == 'Cancelled' %}    
-                                <option selected >Cancelled</option>
-                                {% else %}
-                                <option>Cancelled</option>
-                                {% endif %}
-                                    
-                                </select>
+                                {% if orders.status != 'Delivered' %}
                                 <button class="btn btn-md rounded font-sm hover-up" type="submit">Change Status</button>
+                                {% endif %}
                             {% else %}
                                 <div>
                                     <h4><strong>Order Returned by user</strong></h4>
@@ -91,7 +91,7 @@
                                 <div class="text">
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
-                                        Shipping: Fargo express <br> Pay method: {{ orders.payment.payment_method }} <br> Status: {{ orders.status }} 
+                                        <br> Pay method: {{ orders.payment.payment_method }} <br> Status: {{ orders.status }} 
                                         {% if orders.status == 'Returned' %}
                                         <br>Reason: {{ orders.reasonreturn }}
                                         {% elif orders.status == 'Cancelled' %}

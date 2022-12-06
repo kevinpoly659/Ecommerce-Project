@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,6 +47,10 @@ INSTALLED_APPS = [
     'catagory',
     'mycart',
     'orders',
+    'paypal.standard.ipn',    
+    'easy_thumbnails',
+    'image_cropping',
+
 ]
 
 MIDDLEWARE = [
@@ -148,3 +153,13 @@ ACCOUNT_SID='AC26b24450d1a71613d6d8d059f5fdcb2e'
 AUTH_TOKEN='afebc6ea73332eaad1b311419b7b292c'
 COUNTRY_CODE='+91'
 TWILIO_PHONE_NUMBER='+17262274150'
+
+
+
+PAYPAL_RECEIVER_EMAIL = 'kevintest1234@mail.com'
+
+PAYPAL_TEST = True
+
+
+
+

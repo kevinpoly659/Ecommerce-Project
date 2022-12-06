@@ -49,9 +49,9 @@
                                         <td class="price" data-title="Price"><span>Rs.{{ ob2.price }}</span></td>
                                         <td class="text-center" data-title="Stock">
                                             <div class="detail-qty border radius  m-auto">
-                                                <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                <span class="qty-val">{{ ob.quantity }}</span>
-                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                <a onclick="down( '{{ob.id}}' )" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                                <span id="qty" class="qty-val">{{ ob.quantity }}</span>
+                                                <a onclick="add( '{{ob.id}}' )" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                             </div>
                                         </td>
                                         <td class="text-right" data-title="Cart">
@@ -66,6 +66,14 @@
                                         <td colspan="10" class="text-end">
                                             <a href="{%url 'clearcart' %}" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
                                         </td>
+                                        <script>
+                                            function add(id){
+                                                window.location.href = "/cart/add_quantity/"+id;
+                                            }
+                                            function down(id){
+                                                window.location.href = "/cart/down_quantity/"+id;
+                                            }
+                                        </script>
                                     </tr>
                                 </tbody>
                             </table>
@@ -84,20 +92,32 @@
                                     <div class="total-amount">
                                         <div class="left">
                                             <div class="coupon">
-                                                <form action="#" target="_blank">
                                                     <div class="form-row row justify-content-center">
                                                         <div class="form-group col-lg-6">
-                                                            <input class="font-medium" name="Coupon" placeholder="Enter Your Coupon">
+                                                            <input class="font-medium" type="text" id="coupon" name="Coupon" placeholder="Enter Your Coupon">
                                                         </div>
                                                         <div class="form-group col-lg-6">
-                                                            <button class="btn  btn-sm"><i class="fi-rs-label mr-10"></i>Apply</button>
+                                                            <a class="btn btn-sm" onclick="apply()"><i class="fi-rs-label mr-10"></i>Apply</a>
                                                         </div>
                                                     </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <script>
+                                    function apply(){
+                                        window.location.href = "/cart/applycoupon/"+document.getElementById("coupon").value;
+                                    }
+                                </script>
+                                {% if messages %}
+                                <div class="messages row justify-content-center text-center mt-10">
+                                {% for message in messages %}
+                                <div class="alert alert-info {{ message.tags }} col-6" role="alert">
+                                {{ message }}
+                                </div>
+                                {% endfor %}
+                                </div>
+                                {% endif %}
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div class="border p-md-4 p-30 border-radius cart-totals">
@@ -122,10 +142,10 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    {% if cart.product.exists %}
-                                    <a href="{%url 'checkout' sum %}" class="btn "> <i class="fi-rs-box-alt mr-10 "></i> Proceed To CheckOut</a>  
+                                    {% if sum <= 0 %}
+                                    <a href="{%url 'checkout' sum %}" class="btn disabled"> <i class="fi-rs-box-alt mr-10 "></i> Proceed To CheckOut</a>  
                                     {% else  %}
-                                    <a href="{%url 'checkout' sum %}" class="btn "> <i class="fi-rs-box-alt mr-10 disabled"></i> Proceed To CheckOut</a>
+                                    <a href="{%url 'checkout' sum %}" class="btn "> <i class="fi-rs-box-alt mr-10 "></i> Proceed To CheckOut</a>
                                     {% endif %}
                                 </div>
                             </div>

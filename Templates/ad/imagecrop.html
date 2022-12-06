@@ -1,0 +1,10 @@
+{% extends 'adminbase.html' %}
+{% block content %}
+<div id="alert-box"></div>
+<div id="image-box" class="mb-3"></div>
+<form action="" id="image-form">
+    {% csrf_token %}
+    {{form.as_p}}
+</form>
+<button class="btn btn-primary mt-3 not-visible" id="confirm-btn">confirm</button>
+{% endblock content %}

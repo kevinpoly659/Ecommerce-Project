@@ -128,14 +128,15 @@ def otp(request):
 def user_account(request):
     
     currentuser = request.user
+    account = Account.objects.get(username=request.user.username)
     
     orders = Order.objects.filter(user = currentuser) 
     try:
-        address = Address.objects.get(user = currentuser)
+        address = Address.objects.filter(user = currentuser)
     except:
         return redirect('addaddress')
         
-    return render(request, 'profile/user-account.html',{'current':currentuser, 'address':address, 'orders':orders})
+    return render(request, 'profile/user-account.html',{'current':currentuser, 'address':address, 'orders':orders,'account':account})
 
 
 def user_view_order(request, id):
@@ -187,4 +188,36 @@ def user_add_address(request):
         user1.state=state
         user1.pincode=pincode
         user1.save()
+        return redirect('account')
     return render(request, 'profile/user-add-address.html')
+
+def delete_address(request,id):
+    add = Address.objects.get(id=id)
+    add.delete()
+    return redirect('account')
+
+def user_edit_account(request):
+    account = Account.objects.get(username=request.user.username)
+    if request.method=='POST':
+        first_name=request.POST['firstname']
+        last_name=request.POST['lastname']
+        email = request.POST['email']        
+        phone_number = request.POST['phone_number']     
+        
+        try:
+            password = request.POST['password']         
+            passwordn = request.POST['npassword'] 
+            passwordc = request.POST['cpassword'] 
+            if account.password == password:
+                if passwordn == passwordc:
+                    account = Account(first_name=first_name,last_name=last_name,email=email,password=passwordn,phone_number=phone_number)  
+                    account.save()
+                else:
+                    messages.info(request,"Passwords not matching")
+            else:
+                messages.info(request,"Incorrect Password")
+        except:
+            account = Account(first_name=first_name,last_name=last_name,email=email,phone_number=phone_number) 
+            account.save()
+        
+    return redirect('account')

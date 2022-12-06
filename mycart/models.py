@@ -19,6 +19,7 @@ class cartItem(models.Model):
     cartprice = models.FloatField(null=True)
     size = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
+    coupondiscount = models.IntegerField(null=True)
     
     def __str__(self):
         return self.product.name

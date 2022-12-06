@@ -23,54 +23,8 @@
         <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 mb-sm-15">
-                        <div class="toggle_info">
-                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
-                        </div>
-                        <div class="panel-collapse collapse login_form" id="loginform">
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" name="email" placeholder="Username Or Email">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" placeholder="Password">
-                                    </div>
-                                    <div class="login_footer form-group">
-                                        <div class="chek-form">
-                                            <div class="custome-checkbox">
-                                                <input class="form-check-input" type="checkbox" name="checkbox" id="remember" value="">
-                                                <label class="form-check-label" for="remember"><span>Remember me</span></label>
-                                            </div>
-                                        </div>
-                                        <a href="#">Forgot password?</a>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-md" name="login">Log in</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="toggle_info">
-                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
-                        </div>
-                        <div class="panel-collapse collapse coupon_form " id="coupon">
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter Coupon Code...">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    
+                   
                 </div>
                 <div class="row">
                     <div class="col-12">
@@ -82,89 +36,31 @@
                         <div class="mb-25">
                             <h4>Billing Details</h4>
                         </div>
-                        <form method="post">
-                            <div class="form-group">
-                                <input type="text" required="" name="firstname" placeholder="First name *" value={{ address.firstname }}>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" required="" name="lastname" placeholder="Last name *" value={{ address.lastname }}>
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="phone_number" placeholder="Company Name" value={{ address.phone_number }}>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="Address" required="" placeholder="Address *" value={{ address.Addressfield }}>
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="Town" placeholder="City / Town *" value={{ address.Town }} >
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="State" placeholder="State / County *" value={{ address.state }} >
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="Pin" placeholder="Postcode / ZIP *" value={{ address.pincode }} >
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="email" placeholder="Email address *" value={{ address.Email_Address }} >
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <div class="custome-checkbox">
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="createaccount">
-                                        <label class="form-check-label label_info" data-bs-toggle="collapse" href="#collapsePassword" data-target="#collapsePassword" aria-controls="collapsePassword" for="createaccount"><span>Create an account?</span></label>
+                        
+                        <div class="row">
+                            {% for ob in address %}
+                            <div class="col-lg-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1" value="{{ ob.id }}" onclick="add('{{ob.id}}')">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Shipping Address</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <address>{{ ob.Addressfield }}<br>
+                                            {{ ob.state }}, <br>{{ ob.Town }}<br>Phone: {{ ob.phone_number }}
+                                            <br>Pincode: {{ ob.pincode }}<br>
+                                        </address>
                                     </div>
                                 </div>
+                            </label>
                             </div>
-                            <div id="collapsePassword" class="form-group create-account collapse in">
-                                <input required="" type="password" placeholder="Password" name="password">
                             </div>
-                            <div class="ship_detail">
-                                <div class="form-group">
-                                    <div class="chek-form">
-                                        <div class="custome-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="checkbox" id="differentaddress">
-                                            <label class="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" for="differentaddress"><span>Ship to a different address?</span></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="collapseAddress" class="different_address collapse in">
-                                    <div class="form-group">
-                                        <input type="text" required="" name="fname" placeholder="First name *">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" required="" name="lname" placeholder="Last name *">
-                                    </div>
-                                    <div class="form-group">
-                                        <input required="" type="text" name="cname" placeholder="Company Name">
-                                    </div>
-                                    <div class="form-group">
-                                       
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="billing_address" required="" placeholder="Address *">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="billing_address2" required="" placeholder="Address line2">
-                                    </div>
-                                    <div class="form-group">
-                                        <input required="" type="text" name="city" placeholder="City / Town *">
-                                    </div>
-                                    <div class="form-group">
-                                        <input required="" type="text" name="state" placeholder="State / County *">
-                                    </div>
-                                    <div class="form-group">
-                                        <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-20">
-                                <h5>Additional information</h5>
-                            </div>
-                            <div class="form-group mb-30">
-                                <textarea rows="5" placeholder="Order notes"></textarea>
-                            </div>
-                        </form>
+                            {% endfor %}
+                        </div>
                     </div>
+                    
                     <div class="col-md-6">
                         <div class="order_review">
                             <div class="mb-20">
@@ -209,18 +105,95 @@
                                 </div>
                                 <div class="payment_option">
                                     <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Cash On Delivery</label>
-                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="radio" name="flexRadioDefault" id="payment1" value='Cash on delivery'>
+                                            <label class="form-check-label" for="payment1">
+                                              Cash on delivery
+                                            </label>
+                                          </div>
+                                          <div class="form-check">
+                                            <input class="form-check-input " type="radio" name="flexRadioDefault" id="payment2" checked value='Razorpay'>
+                                            <label class="form-check-label" for="payment2">
+                                              Razorpay
+                                            </label>
+                                            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                                          </div>
+                                          <div class="form-check">
+                                            <input class="form-check-input " type="radio" name="flexRadioDefault" id="payment3" value='Paypal'>
+                                            <label class="form-check-label" for="payment3">
+                                              Paypal
+                                            </label>
+                                          </div>
+                                          
+                                          
+
                                     </div>
                                 </div>
                             </div>
-                            <a href="{%url 'ordercod' %}" class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                            <a onclick="pay('{{ sum }}') " class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                            <script>
+                                
+                                function pay(sum){
+                                    var check = document.getElementById("flexRadioDefault1");
+                                    var val = document.getElementById("flexRadioDefault1").value;
+                                    var check1 = document.getElementById("payment1");
+                                    var check2 = document.getElementById("payment2");
+                                    var check3 = document.getElementById("payment3");
+                                    if (check1.checked==true && check.checked==true)
+                                        window.location.href = "/ordercod/"+val;
+                                    else if (check2.checked == true && check.checked == true){
+                                        rzp1.open();
+                                        e.preventDefault();
+                                    }
+                                    else if (check3.checked==true && check.checked == true)
+                                        window.location.href = "/paypal_payment/"+sum+val;
+                                }
+
+                            
+                                var options = {
+                                    "key": "rzp_test_f1YYvMEQu9HdgL", // Enter the Key ID generated from the Dashboard
+                                    "amount": "{{ amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                    "currency": "INR",
+                                    "name": "Ecomm",
+                                    "description": "Purchase",
+                                    "image": "https://example.com/your_logo",
+                                   // "account_id": "acc_Ef7ArAsdU5t0XL",
+                                    "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                                    "handler": function (response){
+                        
+                                        window.location.href = `http://127.0.0.1:8000/razor_success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}`
+                                        
+                                    }, 
+                                    "prefill": {
+                                        "name": "Kevin",
+                                        "email": "kevinpoly659@gmail.com",
+                                        "contact": "9999999999"
+                                    },
+                        
+                                    "theme": {
+                                        "color": "#3399cc"
+                                    }
+                                };
+                                var rzp1 = new Razorpay(options);
+                                rzp1.on('payment.failed', function (response){
+                                        alert(response.error.code);
+                                        //alert(response.error.description);
+                                     //  alert(response.error.source);
+                                        //alert(response.error.step);
+                                        //alert(response.error.reason);
+                                        //alert(response.error.metadata.order_id);
+                                       // alert(response.error.metadata.payment_id);
+                                });
+                              
+                            </script>
                         </div>
+
                     </div>
+                   
                 </div>
             </div>
         </section>
+       
     </main>
 
 </body>
@@ -228,4 +201,5 @@
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
 </html>
+
 {% endblock %}

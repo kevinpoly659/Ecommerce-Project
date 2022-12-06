@@ -1,0 +1,190 @@
+{% extends 'ad/adminbase.html' %}
+
+{%load static%}
+{% block content %}
+<section class="content-main">
+
+  <div class="card mb-2">
+        <h4 class="card-title text-center">Monthly report</h4>
+        <form action="{%url 'monthlysales' %}" method="POST" enctype="multipart/form-data">
+          {%csrf_token%}
+        <div class="row align-items-center">
+            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                <div class="custom_select">
+                    <select class="form-select select-nice" name="date">
+                        <option selected>January</option>
+                        <option>February</option>
+                        <option>March </option>
+                        <option>April</option>
+                        <option>May</option>
+                        <option>June</option>
+                        <option>July</option>
+                        <option>August</option>
+                        <option>September</option>
+                        <option>October</option>
+                        <option>November</option>
+                        <option>December</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="col-md-2 col-6">
+                <button class="btn btn-primary" type="submit">Show</button>
+            </div>
+          </form>
+        </div>
+    </header>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="table-responsive">
+                <table class="table align-middle table-nowrap mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="text-center">
+                                <div class="form-check align-middle">
+                                    <input class="form-check-input" type="checkbox" id="transactionCheck01">
+                                    <label class="form-check-label" for="transactionCheck01"></label>
+                                </div>
+                            </th>
+                            <th class="align-middle" scope="col">Order ID</th>
+                            <th class="align-middle" scope="col">Billing Name</th>
+                            <th class="align-middle" scope="col">Date</th>
+                            <th class="align-middle" scope="col">Total</th>
+                            <th class="align-middle" scope="col">Payment Status</th>
+                            <th class="align-middle" scope="col">Payment Method</th>
+                            <th class="align-middle" scope="col">View Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for ob in salesreport %}
+                        <tr>
+                            <td class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="transactionCheck02">
+                                    <label class="form-check-label" for="transactionCheck02"></label>
+                                </div>
+                            </td>
+                            <td><a href="#" class="fw-bold">{{ ob.id }}</a> </td>
+                            <td>{{ ob.user.username }}</td>
+                            <td>
+                                {{ ob.date }}
+                            </td>
+                            <td>
+                                {{ ob.orderprice }}
+                            </td>
+                            <td>
+                                <span class="badge badge-pill badge-soft-success">{{ ob.status }}</span>
+                            </td>
+                            <td>
+                                <i class="material-icons md-payment font-xxl text-muted mr-5"></i> {{ ob.payment.payment_method }}
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-xs"> View details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div> <!-- table-responsive end// -->
+    </div>
+</div>
+
+
+
+</section> 
+<section class="content-main">
+
+  <div class="card mb-4">
+        <h4 class="card-title text-center">Yearly report</h4>
+        <form action="{%url 'yearlysales' %}" method="POST" enctype="multipart/form-data">
+          {%csrf_token%}
+        <div class="row align-items-center">
+            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                <div class="custom_select">
+                    <select class="form-select select-nice" name="date">
+                        
+                        <option selected>2022</option>
+                        <option>2021</option>
+                        <option>2020 </option>
+                        <option>2019</option>
+                        <option>2018</option>
+                        <option>2017</option>
+                        <option>2016</option>
+                        <option>2015</option>
+                        <option>2014</option>
+                        <option>2013</option>
+                        <option>2012</option>
+                        <option>2011</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="col-md-2 col-6">
+                <button class="btn btn-primary" type="submit">Show</button>
+            </div>
+          </form>
+        </div>
+    </header>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="table-responsive">
+                <table class="table align-middle table-nowrap mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="text-center">
+                                <div class="form-check align-middle">
+                                    <input class="form-check-input" type="checkbox" id="transactionCheck01">
+                                    <label class="form-check-label" for="transactionCheck01"></label>
+                                </div>
+                            </th>
+                            <th class="align-middle" scope="col">Order ID</th>
+                            <th class="align-middle" scope="col">Billing Name</th>
+                            <th class="align-middle" scope="col">Date</th>
+                            <th class="align-middle" scope="col">Total</th>
+                            <th class="align-middle" scope="col">Payment Status</th>
+                            <th class="align-middle" scope="col">Payment Method</th>
+                            <th class="align-middle" scope="col">View Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for ob in yearlysalesreport %}
+                        <tr>
+                            <td class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="transactionCheck02">
+                                    <label class="form-check-label" for="transactionCheck02"></label>
+                                </div>
+                            </td>
+                            <td><a href="#" class="fw-bold">{{ ob.id }}</a> </td>
+                            <td>{{ ob.user.username }}</td>
+                            <td>
+                                {{ ob.date }}
+                            </td>
+                            <td>
+                                {{ ob.orderprice }}
+                            </td>
+                            <td>
+                                <span class="badge badge-pill badge-soft-success">{{ ob.status }}</span>
+                            </td>
+                            <td>
+                                <i class="material-icons md-payment font-xxl text-muted mr-5"></i> {{ ob.payment.payment_method }}
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-xs"> View details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div> <!-- table-responsive end// -->
+    </div>
+</div>
+
+
+
+</section> 
+{% endblock %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>

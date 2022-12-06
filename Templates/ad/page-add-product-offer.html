@@ -1,0 +1,45 @@
+{% extends 'ad/adminbase.html' %}
+{% block content %}
+
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Add New Offer</h2>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Basic</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{%url 'add_product_offer' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label">Offer Product</label>
+                            <select class="form-select" name="product_name" id="product_name">
+                                {% for ob in products %}
+                                <option>{{ob.name}}</option>
+                                {% endfor %}
+                            </select>    
+                        </div>
+                        <div class="mb-4">
+                            <label for="discount" class="form-label">Discount</label>
+                            <input type="number" placeholder="" class="form-control" id="discount" name="offer">
+                        </div>
+                        
+                        <div>
+                            <button class="btn btn-md rounded font-sm hover-up" type="submit">Publich</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+            
+        </div>
+        
+    </div>
+</section> <!-- content-main end// -->
+
+{% endblock %}

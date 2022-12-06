@@ -24,7 +24,8 @@ urlpatterns = [
     path('admin/',include('adminpanel.urls')),
     path('profile', include('userprofile.urls')),
     path('', include('homepage.urls')),
-    path('cart', include('mycart.urls')),
+    path('cart/', include('mycart.urls')),
     path('', include('orders.urls')),
-    path('products/', include('products.urls'),)
+    path('products/', include('products.urls')),
+    path('paypal/', include('paypal.standard.ipn.urls')),
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
