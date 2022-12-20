@@ -21,7 +21,7 @@ def order_cod(request,id):
         return redirect('home')
     else:
         for ob in cart_items:
-            total +=(ob.product.price*ob.quantity)
+            total +=(ob.cartprice*ob.quantity)
     dates = date.today() 
     payment_method = 'COD'
     pay = Payment(user=request.user, payment_method=payment_method, status='pending', created_at=dates)
@@ -93,7 +93,7 @@ def order_razorpay(request):
     return redirect('account')
 
 
-def paypal_payment(request,sum):
+def paypal_payment(request,sum,val):
     host = request.get_host()
     amount = float(sum)
     amount *= 0.01368 
@@ -104,16 +104,16 @@ def paypal_payment(request,sum):
         # 'invoice': str(order.id),
         'currency_code': 'USD',
         'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
-        'return_url': 'http://{}{}'.format(host, reverse('payment_done')),
+        'return_url': 'http://{}{}'.format(host, reverse('payment_done',kwargs={'val':val})),
         'cancel_return': 'http://{}{}'.format(host, reverse('payment_cancelled')),
     }
     form = PayPalPaymentsForm(initial=paypal_dict)
     return render(request, 'paypal.html', {'form': form})
 
 
-def payment_done(request):
+def payment_done(request,val):
     total=0
-    address = Address.objects.get(user=request.user)
+    address = Address.objects.get(id=val)
     cart_items = cartItem.objects.filter(user=request.user)
     order_id_generated = str(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))
     if cart_items is None:

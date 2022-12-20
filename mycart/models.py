@@ -12,6 +12,7 @@ class cart(models.Model):
         return self.cart_id
     
 class cartItem(models.Model):
+    guest = models.CharField(max_length=300, null=True)
     user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(products, on_delete=models.CASCADE)
     cart = models.ForeignKey(cart, on_delete=models.CASCADE, null=True)

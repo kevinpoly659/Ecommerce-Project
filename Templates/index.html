@@ -41,38 +41,7 @@
         </section>
         <section class="banners mb-20">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="banner-img wow fadeIn animated">
-                            <img src="{% static "assets/imgs/banner/banner-1.png" %}" alt="">
-                            <div class="banner-text">
-                                <span>Smart Offer</span>
-                                <h4>Save 20% on <br>Woman Bag</h4>
-                                <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="banner-img wow fadeIn animated">
-                            <img src="{% static "assets/imgs/banner/banner-2.png" %}" alt="">
-                            <div class="banner-text">
-                                <span>Sale off</span>
-                                <h4>Great Summer <br>Collection</h4>
-                                <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 d-md-none d-lg-flex">
-                        <div class="banner-img wow fadeIn animated  mb-sm-0">
-                            <img src="{% static "assets/imgs/banner/banner-3.png" %}" alt="">
-                            <div class="banner-text">
-                                <span>New Arrivals</span>
-                                <h4>Shop Today’s <br>Deals & Offers</h4>
-                                <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </section>
         <section class="product-tabs pt-25 pb-20 wow fadeIn animated">
@@ -84,8 +53,8 @@
                             <img src="{% static "assets/imgs/banner/banner-11.jpg" %}" alt="">
                             <div class="banner-text">
                                 <span>Women Zone</span>
-                                <h4>Save 17% on <br>Office Dress</h4>
-                                <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                                <br>
+                                <a href="{%url 'products' "Women's Fashion" None %}">Shop Now <i class="fi-rs-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -115,32 +84,26 @@
                                                         <img class="hover-img" src="{{ ob.image2.url }}" alt="">
                                                     </a>
                                                 </div>
-                                                <div class="product-action-1">
-                                                    <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                                </div>
-                                                <div class="product-badges product-badges-position product-badges-mrg">
-                                                    <span class="hot">Hot</span>
-                                                </div>
+                                                
+                                               
                                             </div>
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
                                                     <a href="shop-grid-right.html">{{ ob.catagory.catagory_name }}</a>
                                                 </div>
                                                 <h2><a href="shop-product-right.html">{{ ob.name }}</a></h2>
-                                                <div class="rating-result" title="90%">
-                                                    <span>
-                                                        <span>90%</span>
-                                                    </span>
+                                                
+                                                {% if ob.price != ob.discountprice %}
+                                                <div class="product-price">
+                                                    <span>Rs.{{ ob.discountprice }}</span>
+                                                    <span class="old-price">{{ ob.price }}</span>
                                                 </div>
+                                                {% else %}
                                                 <div class="product-price">
                                                     <span>Rs.{{ ob.price }}</span>
-                                                    <span class="old-price">$245.8</span>
                                                 </div>
-                                                <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
-                                                </div>
+                                                {% endif %}
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -163,31 +126,26 @@
                                                         <img class="hover-img" src="{{ ob.image2.url }}" alt="">
                                                     </a>
                                                 </div>
-                                                <div class="product-action-1">
-                                                    <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                                </div>
-                                                <div class="product-badges product-badges-position product-badges-mrg">
-                                                    <span class="hot">Hot</span>
-                                                </div>
+                                               
+                                                
                                             </div>
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
                                                     <a href="shop-grid-right.html">{{ ob.catagory.catagory_name }}</a>
                                                 </div>
                                                 <h2><a href="shop-product-right.html">{{ ob.name }}</a></h2>
-                                                <div class="rating-result" title="90%">
-                                                    <span>
-                                                        <span>90%</span>
-                                                    </span>
+                                               
+                                                {% if ob.price != ob.discountprice %}
+                                                <div class="product-price">
+                                                    <span>Rs.{{ ob.discountprice }}</span>
+                                                    <span class="old-price">{{ ob.price }}</span>
                                                 </div>
+                                                {% else %}
                                                 <div class="product-price">
                                                     <span>Rs.{{ ob.price }}</span>
                                                 </div>
-                                                <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
-                                                </div>
+                                                {% endif %}
+                                                
                                             </div>
                                         </div>
                                     </div>

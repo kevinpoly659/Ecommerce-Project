@@ -17,7 +17,9 @@ from plotly.offline import plot
 import plotly.express as px
 from .forms import Imageform
 from django.http import JsonResponse
-
+import csv
+from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def admin_login(request):
@@ -116,7 +118,15 @@ def unblock_user(request, id):
 def admin_products(request):
     obj = products.objects.all()
     obj2 = brands.objects.all()
-    return render(request, 'ad\page-products.html', {'products':obj, 'brands':obj2})
+    page = request.GET.get('page', 1)
+    paginator = Paginator(obj, 10)
+    try:
+        prod = paginator.page(page)
+    except PageNotAnInteger:
+        prod = paginator.page(1)
+    except:
+        prod = paginator.page(paginator.num_pages)
+    return render(request, 'ad\page-products.html', {'products':prod, 'brands':obj2})
 
 def admin_addproduct(request):
     obj4 = catagories.objects.all()
@@ -142,7 +152,7 @@ def admin_addproduct(request):
         catagory_instance = catagories.objects.get(catagory_name=catagory)
         brand_instance = brands.objects.get(brand_name=brand)
         sub_cat_instance = sub_catagories.objects.get(subcatagory_name=sub_cat)
-        prod = products(name=name,description=description,price=price,catagory=catagory_instance,sizeS=sizeS,sizeM=sizeM,sizeL=sizeL,sizeXL=sizeXL,sizeXXL=sizeXXL,brand=brand_instance,sub_catagory=sub_cat_instance,image=image,image2=image2,image3=image3,image4=image4)
+        prod = products(name=name,description=description,price=price,discountprice=price,catagory=catagory_instance,sizeS=sizeS,sizeM=sizeM,sizeL=sizeL,sizeXL=sizeXL,sizeXXL=sizeXXL,brand=brand_instance,sub_catagory=sub_cat_instance,image=image,image2=image2,image3=image3,image4=image4)
         prod.save()
         return redirect('adminproducts')
         
@@ -265,7 +275,15 @@ def delete_catagory(request, id):
         
 def admin_orders(request):
     
-    orders = Order.objects.all()
+    order_list = Order.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(order_list, 10)
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except:
+        orders = paginator.page(paginator.num_pages)
     return render(request, 'ad/page-orders.html',{'orders':orders})
 
 
@@ -306,6 +324,7 @@ def monthly_sales(request):
     if len(salesreport)>0:
         context = {
             'salesreport':salesreport,
+            'year':dates,
         }
         return render(request,'ad/page-sales.html',context)
 
@@ -324,8 +343,8 @@ def yearly_sales(request):
             todt = [frm,12,30]
             salesreport = Order.objects.filter(date__gte = datetime.date(fm[0],fm[1],fm[2]),date__lte=datetime.date(todt[0],todt[1],todt[2])).order_by("-id")
         except:
-            fm = [2022,frm,1]
-            todt = [2022,frm,28]
+            fm = [frm,1,1]
+            todt = [frm,12,28]
             salesreport = Order.objects.filter(date__gte = datetime.date(fm[0],fm[1],fm[2]),date__lte=datetime.date(todt[0],todt[1],todt[2])).order_by("-id")
     if len(salesreport)>0:
         context = {
@@ -336,9 +355,74 @@ def yearly_sales(request):
     else:
         messages.error(request,"No Orders")
         return render(request,'ad/page-sales.html')
+
+
+def custom_sales(request):
+    if request.method == 'POST':
+        frm = request.POST.get('fdate')
+        todt = request.POST.get('tdate')
+        salesreport = Order.objects.filter(date__range = [frm,todt]).order_by('-id')
+    if len(salesreport)>0:
+        context = {
+            'csalesreport':salesreport,
+            'frm':frm,
+            'todt':todt,
+        }
+        return render(request,'ad/page-sales.html',context)
+
+    else:
+        messages.error(request,"No Orders")
+        return render(request,'ad/page-sales.html')
+    
+        
+
+def export(request,dates):
+    if type(dates) == int:
+        frm = int(dates)    
+        try:
+            fm = [frm,1,1]
+            todt = [frm,12,30]
+            salesreport = Order.objects.filter(date__gte = datetime.date(fm[0],fm[1],fm[2]),date__lte=datetime.date(todt[0],todt[1],todt[2])).order_by("-id")
+        except: 
+            fm = [frm,1,1]
+            todt = [frm,12,28]
+            salesreport = Order.objects.filter(date__gte = datetime.date(fm[0],fm[1],fm[2]),date__lte=datetime.date(todt[0],todt[1],todt[2])).order_by("-id")
+        
+    elif type(dates) == str:
+        frm = datetime.datetime.strptime(dates, '%B').month
+        try:
+            fm = [2022,frm,1]
+            todt = [2022,frm,30]
+            salesreport = Order.objects.filter(date__gte = datetime.date(fm[0],fm[1],fm[2]),date__lte=datetime.date(todt[0],todt[1],todt[2])).order_by("-id")
+        except:
+            fm = [2022,frm,1]
+            todt = [2022,frm,28]
+            salesreport = Order.objects.filter(date__gte = datetime.date(fm[0],fm[1],fm[2]),date__lte=datetime.date(todt[0],todt[1],todt[2])).order_by("-id")
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="csv_database_write.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Order_id', 'Billing Name', 'Date', 'Total', 'Payment Status', 'Payment Method'])
+    for ob in salesreport:
+        datestr = str(ob.date)
+        writer.writerow([ob.id, ob.user.username, datestr, ob.ordertotal, ob.status, ob.payment.payment_method])
+    return response
+    
+
+def custom_export(request,frm,to):
+    salesreport = Order.objects.filter(date__range = [frm,to])
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="csv_database_write.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Order_id', 'Billing Name', 'Date', 'Total', 'Payment Status', 'Payment Method'])
+    for ob in salesreport:
+        datestr = str(ob.date)
+        writer.writerow([ob.id, ob.user.username, datestr, ob.ordertotal, ob.status, ob.payment.payment_method])
+    return response
+
+
     
     
-    
+
 def admin_coupon(request):
     inst = coupon.objects.all()
     return render(request, 'ad/page-coupon.html', {'coupon':inst})
@@ -370,7 +454,7 @@ def add_product_offer(request):
     if request.method == 'POST':
         name = request.POST.get('product_name')
         product = products.objects.get(name = name)
-        offer = request.POST.get('offer')
+        offer = int(request.POST.get('offer'))
         inst2 = productoffer(product=product, offer=offer)
         inst2.save()
         return redirect('offers')
@@ -388,13 +472,14 @@ def add_catagory_offer(request):
     if request.method == 'POST':
         name = request.POST.get('catagory_name')
         catagory = catagories.objects.get(catagory_name=name)
-        offer = request.POST.get('offer')
-        inst2 = catagoryoffer(catagory=catagory,offer=offer)
+        offer = int(request.POST.get('offer'))
+        inst2 = catagoryoffer(category=catagory,offer=offer)
         inst2.save()
         return redirect('offers')
     return render(request,'ad/page-add-catagory-offer.html',{'catagory':inst})
 
 def delete_catagory_offer(request, id):
-    offer = catagoryoffer.objects.get(id=id)
-    offer.delete()
+    offerinst = catagoryoffer.objects.get(id=id)
+    offerinst.delete()
     return redirect('offers')
+

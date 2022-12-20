@@ -98,3 +98,7 @@ class Profile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name= 'profile')
     uid = models.UUIDField(default=uuid.uuid4)
     phone_number = models.CharField(max_length=15)
+    
+class Guest(models.Model):
+    name = models.CharField(max_length=200,default='guest')
+    uid = models.UUIDField(default=uuid.uuid4)

@@ -41,21 +41,19 @@
                             {% for ob in address %}
                             <div class="col-lg-6">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1" value="{{ ob.id }}" onclick="add('{{ob.id}}')">
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="mb-0">Shipping Address</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <address>{{ ob.Addressfield }}<br>
-                                            {{ ob.state }}, <br>{{ ob.Town }}<br>Phone: {{ ob.phone_number }}
-                                            <br>Pincode: {{ ob.pincode }}<br>
-                                        </address>
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="address" value="{{ ob.id }}" checked>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Shipping Address</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <address>{{ ob.Addressfield }}<br>
+                                                {{ ob.state }}, <br>{{ ob.Town }}<br>Phone: {{ ob.phone_number }}
+                                                <br>Pincode: {{ ob.pincode }}<br>
+                                            </address>
+                                        </div>
                                     </div>
                                 </div>
-                            </label>
-                            </div>
                             </div>
                             {% endfor %}
                         </div>
@@ -134,8 +132,14 @@
                             <script>
                                 
                                 function pay(sum){
-                                    var check = document.getElementById("flexRadioDefault1");
-                                    var val = document.getElementById("flexRadioDefault1").value;
+                                    var check = document.getElementById("address");
+                                    
+                                    for(var i = 0; i < check.length; i++){
+                                        if(check[i].checked){
+                                            var val = check[i].value;
+                                            console.log(val)
+                                        }
+                                    }
                                     var check1 = document.getElementById("payment1");
                                     var check2 = document.getElementById("payment2");
                                     var check3 = document.getElementById("payment3");
@@ -146,7 +150,7 @@
                                         e.preventDefault();
                                     }
                                     else if (check3.checked==true && check.checked == true)
-                                        window.location.href = "/paypal_payment/"+sum+val;
+                                        window.location.href = "/paypal_payment/"+sum+"/"+val;
                                 }
 
                             

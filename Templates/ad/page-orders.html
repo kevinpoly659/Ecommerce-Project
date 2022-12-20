@@ -51,17 +51,27 @@
                     </div> <!-- table-responsive //end -->
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
+            {% if orders.has_other_pages %}
+                <ul class="pagination">
+                    {% if orders.has_previous %}
+                    <li><a class="page-link" href="?page={{ orders.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                    <li class="disabled"  class="page-link"><span  class="page-link">&laquo;</span></li>
+                    {% endif %}
+                    {% for i in orders.paginator.page_range %}
+                    {% if orders.number == i %}
+                        <li class="page-item active"><span  class="page-link" >{{ i }} </span></span></li>
+                    {% else %}
+                        <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if orders.has_next %}
+                    <li><a class="page-link" href="?page={{ orders.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                    <li class="disabled" class="page-link"><span  class="page-link">&raquo;</span></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+            
         </section> <!-- content-main end// -->
     {% endblock %}

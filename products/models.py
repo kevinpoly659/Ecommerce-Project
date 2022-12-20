@@ -16,6 +16,7 @@ class products(models.Model):
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField(max_length=500)
     price = models.IntegerField(validators=[MinValueValidator(0)])
+    discountprice = models.IntegerField(default=0)
     size = models.CharField(max_length=200, default="S")
     sizeS = models.IntegerField(validators=[MinValueValidator(0)], blank=True, default=100)
     sizeM = models.IntegerField(validators=[MinValueValidator(0)], blank=True, default=100)
@@ -32,6 +33,8 @@ class products(models.Model):
     sub_catagory = models.ForeignKey(sub_catagories, on_delete=models.CASCADE)
     brand = models.ForeignKey(brands, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
 
 
 
@@ -43,7 +46,7 @@ class coupon(models.Model):
     
     
 class productoffer(models.Model):
-    product = models.ForeignKey(products,on_delete=models.CASCADE)
+    product= models.OneToOneField(products, related_name='product_offers', on_delete=models.CASCADE)
     offer = models.IntegerField(blank=True)
     is_active = models.BooleanField(default=True)
     
@@ -51,10 +54,10 @@ class productoffer(models.Model):
         return self.product.name
     
 class catagoryoffer(models.Model):
-    catagory = models.ForeignKey(catagories, on_delete=models.CASCADE)
+    category= models.OneToOneField(catagories, related_name='category_offers', on_delete=models.CASCADE)
     offer = models.IntegerField(blank=True)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
-        return self.catagory.catagory_name
+        return self.category.catagory_name
     

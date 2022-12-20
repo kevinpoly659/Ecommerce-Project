@@ -208,16 +208,31 @@ def user_edit_account(request):
             password = request.POST['password']         
             passwordn = request.POST['npassword'] 
             passwordc = request.POST['cpassword'] 
-            if account.password == password:
+            if account.check_password(password):
                 if passwordn == passwordc:
-                    account = Account(first_name=first_name,last_name=last_name,email=email,password=passwordn,phone_number=phone_number)  
+                    account.set_password(passwordn)  
+                    if account.first_name != first_name:
+                        account.first_name = first_name
+                    if account.last_name != last_name:
+                        account.last_name = last_name
+                    if account.email != email:
+                        account.email = email
+                    if account.phone_number != phone_number:
+                        account.phone_number = phone_number 
                     account.save()
                 else:
                     messages.info(request,"Passwords not matching")
             else:
                 messages.info(request,"Incorrect Password")
         except:
-            account = Account(first_name=first_name,last_name=last_name,email=email,phone_number=phone_number) 
+            if account.first_name != first_name:
+                account.first_name = first_name
+            if account.last_name != last_name:
+                account.last_name = last_name
+            if account.email != email:
+                account.email = email
+            if account.phone_number != phone_number:
+                account.phone_number = phone_number 
             account.save()
         
-    return redirect('account')
+    return redirect('userlogin')
