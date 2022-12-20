@@ -87,13 +87,15 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES={
-   'default':{
-      'ENGINE':'django.db.backends.postgresql',
-      'NAME':'Ecommerce',
-      'USER':'Ecomm',
-      'PASSWORD':'9895',
-   }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'Ecommerce',
+        'USER': 'kevin',
+        'PASSWORD': '9895',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 # Password validation
