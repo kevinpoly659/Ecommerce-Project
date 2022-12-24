@@ -15,7 +15,10 @@ from django.shortcuts import redirect, render,get_object_or_404,reverse
 def order_cod(request,id):
     total=0
     address = Address.objects.get(id=id)
-    cart_items =  cartItem.objects.filter(user=request.user)
+    try:
+        cart_items =  cartItem.objects.filter(user=request.user)
+    except:
+        cart_items = cartItem.objects.filter(guest=(Guest.objects.get(name='guest')).uid)
     order_id_generated = str(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))
     if cart_items is None:
         return redirect('home')
@@ -24,14 +27,23 @@ def order_cod(request,id):
             total +=(ob.cartprice*ob.quantity)
     dates = date.today() 
     payment_method = 'COD'
-    pay = Payment(user=request.user, payment_method=payment_method, status='pending', created_at=dates)
+    try:
+        pay = Payment(user=request.user, payment_method=payment_method, status='pending', created_at=dates)
+    except:
+        pay = Payment(guest=(Guest.objects.get(name='guest')), payment_method=payment_method, status='pending', created_at=dates)
     pay.save()
     
-    orders = Order(user=request.user, address=address, ordertotal=total, orderid=order_id_generated, date=dates, payment=pay)
+    try:
+        orders = Order(user=request.user, address=address, ordertotal=total, orderid=order_id_generated, date=dates, payment=pay)
+    except:
+        orders = Order(guest=(Guest.objects.get(name='guest')), address=address, ordertotal=total, orderid=order_id_generated, date=dates, payment=pay)
     orders.save()
     
     for ob in cart_items:
-        order_products = OrderProduct(order=orders,user=request.user)
+        try:
+            order_products = OrderProduct(order=orders,user=request.user)
+        except:
+            order_products = OrderProduct(order=orders,guest=(Guest.objects.get(name='guest')))
         product = products.objects.get(id=ob.product.id)
         order_products.product = ob.product
         order_products.quantity = ob.quantity
@@ -56,7 +68,7 @@ def razor_success(request):
        return redirect('home')
     else:
         for ob in cart_items:
-            total +=(ob.product.price*ob.quantity)
+            total +=(ob.cartprice*ob.quantity)
             
     
     dates = date.today() 
@@ -68,7 +80,10 @@ def razor_success(request):
     orders.save()
     
     for ob in cart_items:
-        order_products = OrderProduct(order=orders,user=request.user)
+        try:
+            order_products = OrderProduct(order=orders,user=request.user)
+        except:
+            order_products = OrderProduct(order=orders,guest=(Guest.objects.get(name='guest')))
         product = products.objects.get(id=ob.product.id)
         order_products.product = ob.product
         order_products.quantity = ob.quantity
@@ -114,7 +129,10 @@ def paypal_payment(request,sum,val):
 def payment_done(request,val):
     total=0
     address = Address.objects.get(id=val)
-    cart_items = cartItem.objects.filter(user=request.user)
+    try:
+        cart_items =  cartItem.objects.filter(user=request.user)
+    except:
+        cart_items = cartItem.objects.filter(guest=(Guest.objects.get(name='guest')).uid)
     order_id_generated = str(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))
     if cart_items is None:
        return redirect('home')
@@ -126,13 +144,23 @@ def payment_done(request,val):
     dates = date.today() 
     payment_method = 'Paypal'
     payment_id = str(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))
-    pay=Payment(user=request.user,payment_method=payment_method,payment_id=payment_id,status='payment complete',created_at=dates)
+    try:
+        pay = Payment(user=request.user, payment_method=payment_method, status='pending', created_at=dates)
+    except:
+        pay = Payment(guest=(Guest.objects.get(name='guest')), payment_method=payment_method, status='pending', created_at=dates)
     pay.save()
-    orders = Order(user=request.user, address=address, ordertotal=total, orderid=order_id_generated, date=dates, payment=pay)
+    
+    try:
+        orders = Order(user=request.user, address=address, ordertotal=total, orderid=order_id_generated, date=dates, payment=pay)
+    except:
+        orders = Order(guest=(Guest.objects.get(name='guest')), address=address, ordertotal=total, orderid=order_id_generated, date=dates, payment=pay)
     orders.save()
     
     for ob in cart_items:
-        order_products = OrderProduct(order=orders,user=request.user)
+        try:
+            order_products = OrderProduct(order=orders,user=request.user)
+        except:
+            order_products = OrderProduct(order=orders,guest=(Guest.objects.get(name='guest')))
         product = products.objects.get(id=ob.product.id)
         order_products.product = ob.product
         order_products.quantity = ob.quantity

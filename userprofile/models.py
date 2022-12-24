@@ -78,7 +78,10 @@ class Account(AbstractBaseUser):
        def has_module_perms(self, add_label):
         return True    
 
-
+class Guest(models.Model):
+    name = models.CharField(max_length=200,default='guest')
+    uid = models.UUIDField(default=uuid.uuid4)
+    
 class Address(models.Model):
     firstname           =   models.CharField(max_length=50 ,null=True)
     lastname            =   models.CharField(max_length=50 ,null=True)
@@ -89,7 +92,7 @@ class Address(models.Model):
     state               =   models.CharField(max_length=50 ,null=True) 
     pincode             =   models.CharField(max_length=50 ,null=True)
     user                =   models.ForeignKey(Account,on_delete=models.CASCADE, null=True) 
-
+    guest               =   models.ForeignKey(Guest,on_delete=models.CASCADE,null=True)
     def __unicode__(self):
         return self.firstname       
     
@@ -99,6 +102,3 @@ class Profile(models.Model):
     uid = models.UUIDField(default=uuid.uuid4)
     phone_number = models.CharField(max_length=15)
     
-class Guest(models.Model):
-    name = models.CharField(max_length=200,default='guest')
-    uid = models.UUIDField(default=uuid.uuid4)

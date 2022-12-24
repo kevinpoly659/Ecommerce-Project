@@ -1,9 +1,9 @@
 from django.db import models
-from userprofile .models import Account, Address
+from userprofile .models import Account, Address, Guest
 from products . models import products
 
 class Payment(models.Model):
-    
+    guest = models.ForeignKey(Guest, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     payment_id = models.CharField(max_length=100, null=True)
     payment_method = models.CharField(max_length=100)
@@ -29,6 +29,7 @@ class Order(models.Model):
     )
 
     user        =   models.ForeignKey(Account,on_delete=models.CASCADE, null=True)
+    guest       =   models.ForeignKey(Guest, on_delete=models.CASCADE, null=True)
     address     =   models.ForeignKey(Address,on_delete=models.CASCADE, null=True)
     ordertotal  =   models.FloatField(max_length=50 ,null=True)
     orderid     =   models.CharField(max_length=100,null=True)
@@ -57,6 +58,7 @@ class OrderProduct(models.Model):
     )
     
     user        =   models.ForeignKey(Account,on_delete=models.CASCADE, null=True)
+    guest       =   models.ForeignKey(Guest, on_delete=models.CASCADE,null=True)
     order       =   models.ForeignKey(Order,on_delete=models.CASCADE, null=True)
     product     =   models.ForeignKey(products,on_delete=models.CASCADE, null=True)
     quantity    =   models.IntegerField(null=True)

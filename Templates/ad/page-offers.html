@@ -40,7 +40,7 @@
                             <td >
                                 {{ ob.offer }}
                             </td>
-                            <td class="text-end"><a href="{%url 'delete_product_offer' ob.id %}" class="btn btn-primary">Delete</a></td>
+                            <td class="text-end"><a onclick="deleteprodoffer({{ ob.id }})" class="btn btn-primary">Delete</a></td>
                         </tr>
                         {% endfor %}
 
@@ -86,7 +86,7 @@
                             <td>
                                 {{ ob.offer }}
                             </td>
-                            <td class="text-end"><a href="{%url 'delete_catagory_offer' ob.id %}" class="btn btn-primary">Delete</a></td>
+                            <td class="text-end"><a onclick="deleteoffer({{ ob.id }})" class="btn btn-primary">Delete</a></td>
                         </tr>
                         {% endfor %}
 
@@ -95,7 +95,48 @@
             </div> <!-- table-responsive //end -->
         </div> <!-- card-body end// -->
     </div> <!-- card end// -->
-    
+    <script>
+        function deleteoffer(id){
+            swal({
+                title: "Confirm Delete ",
+                text: "",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                  swal(" Deleted", {
+                    icon: "success",  
+                  }).then(()=>{ window.location.href = "/admin/delete_catagory_offer/"+id
+                })
+                } else {
+                    swal(" Not Deleted", {icon: "error"});
+                }
+              });
+            }
+
+
+            function deleteprodoffer(id){
+                swal({
+                    title: "Confirm Delete ",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  .then((willDelete) => {
+                    if (willDelete) {
+                      swal(" Deleted", {
+                        icon: "success",  
+                      }).then(()=>{ window.location.href = "/admin/delete_product_offer/"+id
+                    })
+                    } else {
+                        swal(" Not Deleted", {icon: "error"});
+                    }
+                  });
+                }
+        </script>
  
 </section> <!-- content-main end// -->
 

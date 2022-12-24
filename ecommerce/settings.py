@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&yj4iy#kv2$6#p%ydk=q2-f47c&upiqfshi-sw_b=t3oy0@o7@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.environ.get('DEBUG')) == '1'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',    
     'easy_thumbnails',
     'image_cropping',
+    'storages',
 
 ]
 
@@ -90,11 +91,12 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES={
    'default':{
       'ENGINE':'django.db.backends.postgresql',
-      'NAME':'Ecommerce',
-      'USER':'Ecomm',
-      'PASSWORD':'9895',
+      'NAME':os.environ.get('DATABASE_NAME'),
+      'USER':os.environ.get('DATABASE_USERNAME'),
+      'PASSWORD':os.environ.get('DATABASE_PASSWORD')
    }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -128,7 +130,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -159,6 +160,9 @@ TWILIO_PHONE_NUMBER='+17262274150'
 PAYPAL_RECEIVER_EMAIL = 'kevintest1234@mail.com'
 
 PAYPAL_TEST = True
+
+from .cdn.conf import (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_OBJECT_PARAMETERS, DEFAULT_FILE_STORAGE, AWS_QUERYSTRING_AUTH, STATICFILES_STORAGE)
+
 
 
 

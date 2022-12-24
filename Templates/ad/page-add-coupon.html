@@ -36,6 +36,15 @@
         </div>
         
     </div>
+            {% if messages %}
+            <div class="messages row justify-content-center text-center mt-10">
+            {% for message in messages %}
+            <div class="alert alert-info {{ message.tags }} col-6" role="alert">
+            {{ message }}
+            </div>
+            {% endfor %}
+            </div>
+            {% endif %}
 </section> <!-- content-main end// -->
 
 {% endblock %}

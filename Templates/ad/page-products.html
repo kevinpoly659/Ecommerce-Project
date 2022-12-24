@@ -7,9 +7,7 @@
                     <p></p>
                 </div>
                 <div>
-                    <a href="#" class="btn btn-light rounded font-md">Export</a>
-                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
-                    <a href="{%url 'addproduct' %}" class="btn btn-primary btn-sm rounded">Create new</a>
+                    <a href="{% url 'addproduct' %}" class="btn btn-primary btn-sm rounded">Create new</a>
                 </div>
             </div>
             <div class="card mb-4">
@@ -71,13 +69,32 @@
                                 <a href="{%url 'editproduct' ob.id %}" class="btn btn-sm font-sm rounded btn-brand">
                                     <i class="material-icons md-edit"></i> Edit
                                 </a>
-                                <a href="{%url 'deleteproduct' ob.id %}" class="btn btn-sm font-sm btn-light rounded">
+                                <a onclick="deleteprod({{ ob.id }},'{{ ob.name }}')" class="btn btn-sm font-sm btn-light rounded">
                                     <i class="material-icons md-delete_forever"></i> Delete
                                 </a>
                             </div>
                         </div> <!-- row .// -->
-
-                   
+                        <script>
+                        function deleteprod(id,product_name){
+                            swal({
+                                title: "Confirm Delete " + product_name,
+                                text: "",
+                                icon: "warning",
+                                buttons: true,
+                                dangerMode: true,
+                              })
+                              .then((willDelete) => {
+                                if (willDelete) {
+                                  swal(product_name + " Deleted", {
+                                    icon: "success",  
+                                  }).then(()=>{ window.location.href = "/admin/deleteproduct/"+id
+                                })
+                                } else {
+                                    swal(product_name + " Not Deleted", {icon: "error"});
+                                }
+                              });
+                            }
+                        </script>
                  
                 </div> <!-- card-body end// -->
                 {% endfor %} 

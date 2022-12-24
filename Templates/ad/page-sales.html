@@ -71,7 +71,6 @@
                               <th class="align-middle" scope="col">Total</th>
                               <th class="align-middle" scope="col">Payment Status</th>
                               <th class="align-middle" scope="col">Payment Method</th>
-                              <th class="align-middle" scope="col">View Details</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -97,9 +96,7 @@
                               <td>
                                   <i class="material-icons md-payment font-xxl text-muted mr-5"></i> {{ ob.payment.payment_method }}
                               </td>
-                              <td>
-                                  <a href="#" class="btn btn-xs"> View details</a>
-                              </td>
+                             
                           </tr>
                           {% endfor %}
                       </tbody>
@@ -110,7 +107,15 @@
       
   </div>
   
-  
+            {% if messages %}
+            <div class="messages row justify-content-center text-center mt-10">
+            {% for message in messages %}
+            <div class="alert alert-info {{ message.tags }} col-6" role="alert">
+            {{ message }}
+            </div>
+            {% endfor %}
+            </div>
+            {% endif %}
   
   </section> 
 {% endblock %}

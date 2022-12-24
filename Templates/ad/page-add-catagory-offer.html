@@ -26,7 +26,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="discount" class="form-label">Discount</label>
-                            <input type="number" placeholder="" class="form-control" id="discount" name="offer">
+                            <input type="number" placeholder="" class="form-control" id="discount" name="offer" required>
                         </div>
                         
                         <div>
@@ -40,6 +40,15 @@
         </div>
         
     </div>
+    {% if messages %}
+    <div class="messages row justify-content-center text-center mt-10">
+    {% for message in messages %}
+    <div class="alert alert-info {{ message.tags }} col-6" role="alert">
+    {{ message }}
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
 </section> <!-- content-main end// -->
 
 {% endblock %}

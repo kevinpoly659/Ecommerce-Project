@@ -100,10 +100,13 @@ def checkout(request, sum):
         
     try:
         address = Address.objects.filter(user=request.user)
-    except: 
-        address = None
+    except:
+        address =Address.objects.filter(guest=(Guest.objects.get(name='guest')))
+    if not address: 
+        return redirect('addaddress')
+     
     client = razorpay.Client(
-            auth = ('rzp_live_QPrFX9xDqw14Qe','LV6QVWzm9hIXyhTn0VM0UVMP')
+            auth = ('rzp_test_jMC1g7ASBbdiKQ','o4HstMme9HIGNT73DghE8uQv')
         )
     global payments
     payment = client.order.create({'amount':amount, 'currency':'INR', 'payment_capture':'1'})

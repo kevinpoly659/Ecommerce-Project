@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from . models import Account,Address, Profile
+from . models import Account,Address, Profile,Guest
 from .helper import MessageHandler
 import random
 from orders.models import Order,OrderProduct
@@ -126,15 +126,23 @@ def otp(request):
 
 
 def user_account(request):
-    
-    currentuser = request.user
-    account = Account.objects.get(username=request.user.username)
-    
-    orders = Order.objects.filter(user = currentuser) 
-    try:
-        address = Address.objects.filter(user = currentuser)
+    try:    
+        currentuser = request.user
+        account = Account.objects.get(username=request.user.username)
+        
+        orders = Order.objects.filter(user = currentuser) 
+        try:
+            address = Address.objects.filter(user = currentuser)
+        except:
+            return redirect('addaddress')
     except:
-        return redirect('addaddress')
+        account = Guest.objects.get(name='guest')
+        orders = Order.objects.filter(guest =(Guest.objects.get(name='guest'))) 
+        try:
+            address = Address.objects.filter(guest =(Guest.objects.get(name='guest')))
+        except:
+            return redirect('addaddress')
+        
         
     return render(request, 'profile/user-account.html',{'current':currentuser, 'address':address, 'orders':orders,'account':account})
 
@@ -166,29 +174,53 @@ def user_cancel_order(request, id):
     return redirect('vieworder', id)
 
 def user_add_address(request):
-    currentuser = request.user
-    if request.method == 'POST':
-        firstname = request.POST['firstname']
-        lastname = request.POST['lastname']
-        phone_number = request.POST['phone_number']
-        email = request.POST['email']
-        address = request.POST['Address']
-        town = request.POST['Town']
-        state = request.POST['State']
-        pincode = request.POST['Pin']
-        
-        
-        user1 = Address.objects.create(user=currentuser)
-        user1.firstname=firstname
-        user1.lastname=lastname
-        user1.phone_number=phone_number
-        user1.Email_Address=email
-        user1.Addressfield=address
-        user1.Town=town
-        user1.state=state
-        user1.pincode=pincode
-        user1.save()
-        return redirect('account')
+    try:
+        currentuser = request.user
+        if request.method == 'POST':
+            firstname = request.POST['firstname']
+            lastname = request.POST['lastname']
+            phone_number = request.POST['phone_number']
+            email = request.POST['email']
+            address = request.POST['Address']
+            town = request.POST['Town']
+            state = request.POST['State']
+            pincode = request.POST['Pin']
+            
+            
+            user1 = Address.objects.create(user=currentuser)
+            user1.firstname=firstname
+            user1.lastname=lastname
+            user1.phone_number=phone_number
+            user1.Email_Address=email
+            user1.Addressfield=address
+            user1.Town=town
+            user1.state=state
+            user1.pincode=pincode
+            user1.save()
+            return redirect('account')
+    except:
+        if request.method == 'POST':
+            firstname = request.POST['firstname']
+            lastname = request.POST['lastname']
+            phone_number = request.POST['phone_number']
+            email = request.POST['email']
+            address = request.POST['Address']
+            town = request.POST['Town']
+            state = request.POST['State']
+            pincode = request.POST['Pin']
+            
+            
+            user1 = Address.objects.create(guest=(Guest.objects.get(name='guest')))
+            user1.firstname=firstname
+            user1.lastname=lastname
+            user1.phone_number=phone_number
+            user1.Email_Address=email
+            user1.Addressfield=address
+            user1.Town=town
+            user1.state=state
+            user1.pincode=pincode
+            user1.save()
+            return redirect('viewcart',0)
     return render(request, 'profile/user-add-address.html')
 
 def delete_address(request,id):

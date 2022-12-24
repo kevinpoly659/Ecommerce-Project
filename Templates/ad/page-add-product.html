@@ -25,7 +25,7 @@
                                 {% csrf_token %}
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product title</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name">
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name" required>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
@@ -36,7 +36,7 @@
                                         <div class="mb-4">
                                             <label class="form-label">price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="Rs." type="text" class="form-control" name="price">
+                                                <input placeholder="Rs." type="text" class="form-control" name="price" required>
                                             </div>
                                         </div>
                                     </div>

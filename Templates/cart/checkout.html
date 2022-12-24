@@ -41,7 +41,7 @@
                             {% for ob in address %}
                             <div class="col-lg-6">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="address" value="{{ ob.id }}" checked>
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="address" value="{{ ob.id }}" onclick="addoption({{ ob.id }})">
                                     <div class="card">
                                         <div class="card-header">
                                             <h5 class="mb-0">Shipping Address</h5>
@@ -57,6 +57,7 @@
                             </div>
                             {% endfor %}
                         </div>
+                        <input name="flexRadioDefault2" id="contain" value="" hidden>
                     </div>
                     
                     <div class="col-md-6">
@@ -132,30 +133,28 @@
                             <script>
                                 
                                 function pay(sum){
-                                    var check = document.getElementById("address");
-                                    
-                                    for(var i = 0; i < check.length; i++){
-                                        if(check[i].checked){
-                                            var val = check[i].value;
-                                            console.log(val)
-                                        }
-                                    }
+                                    var check = document.getElementById("contain");
+                                    var val = check.value;
                                     var check1 = document.getElementById("payment1");
                                     var check2 = document.getElementById("payment2");
                                     var check3 = document.getElementById("payment3");
-                                    if (check1.checked==true && check.checked==true)
+                                    if (check1.checked==true)
                                         window.location.href = "/ordercod/"+val;
-                                    else if (check2.checked == true && check.checked == true){
+                                    else if (check2.checked == true){
                                         rzp1.open();
                                         e.preventDefault();
                                     }
-                                    else if (check3.checked==true && check.checked == true)
+                                    else if (check3.checked==true)
                                         window.location.href = "/paypal_payment/"+sum+"/"+val;
                                 }
 
-                            
+                                function addoption(addvalue){
+
+                                    var checkadd = document.getElementById("contain");
+                                    checkadd.value = addvalue;
+                                }
                                 var options = {
-                                    "key": "rzp_test_f1YYvMEQu9HdgL", // Enter the Key ID generated from the Dashboard
+                                    "key": "rzp_test_jMC1g7ASBbdiKQ", // Enter the Key ID generated from the Dashboard
                                     "amount": "{{ amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                                     "currency": "INR",
                                     "name": "Ecomm",
@@ -164,6 +163,7 @@
                                    // "account_id": "acc_Ef7ArAsdU5t0XL",
                                     "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                                     "handler": function (response){
+
                         
                                         window.location.href = `http://127.0.0.1:8000/razor_success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}`
                                         

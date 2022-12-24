@@ -152,8 +152,12 @@ def admin_addproduct(request):
         catagory_instance = catagories.objects.get(catagory_name=catagory)
         brand_instance = brands.objects.get(brand_name=brand)
         sub_cat_instance = sub_catagories.objects.get(subcatagory_name=sub_cat)
-        prod = products(name=name,description=description,price=price,discountprice=price,catagory=catagory_instance,sizeS=sizeS,sizeM=sizeM,sizeL=sizeL,sizeXL=sizeXL,sizeXXL=sizeXXL,brand=brand_instance,sub_catagory=sub_cat_instance,image=image,image2=image2,image3=image3,image4=image4)
-        prod.save()
+        if not products.objects.get(name=name):
+            prod = products.objects.create(name=name,description=description,price=price,discountprice=price,catagory=catagory_instance,sizeS=sizeS,sizeM=sizeM,sizeL=sizeL,sizeXL=sizeXL,sizeXXL=sizeXXL,brand=brand_instance,sub_catagory=sub_cat_instance,image=image,image2=image2,image3=image3,image4=image4)
+            prod.save()
+        else:
+            messages.info(request,'product already exists')
+            return redirect('addproduct')
         return redirect('adminproducts')
         
         
@@ -229,10 +233,13 @@ def admin_addcatagory(request):
     inst = catagories.objects.all()
     if request.method == 'POST':
         name = request.POST.get('catagory_name')
-        cat = catagories(catagory_name=name)
-        cat.save()
-        return redirect('admincatagory')
-
+        if len(name)!= 0:
+            cat = catagories(catagory_name=name)
+            cat.save()
+            return redirect('admincatagory')
+        else:
+            messages.info(request, '!!Enter catagaory name!!')
+            return redirect('addcatagory')
     return render(request, 'ad\page-add-catagory.html', {'cat':inst})
 
 def admin_addsubcatagory(request):
@@ -242,13 +249,17 @@ def admin_addsubcatagory(request):
         catname = request.POST.get('catagory')
         cat = catagories.objects.get(catagory_name=catname)
         subname = request.POST.get('subcatagory_name')
-        try:
-            subcat = sub_catagories.objects.get(catagories = cat, subcatagory_name=subname)
-            messages.info(request,"Subcategory Already Exists")
-        except:
-            subcat = sub_catagories(catagories = cat, subcatagory_name=subname)
-            subcat.save()
-            return redirect('admincatagory')
+        if len(subname)!=0:
+            try:
+                subcat = sub_catagories.objects.get(catagories = cat, subcatagory_name=subname)
+                messages.info(request,"Subcategory Already Exists")
+            except:
+                subcat = sub_catagories(catagories = cat, subcatagory_name=subname)
+                subcat.save()
+                return redirect('admincatagory')
+        else:
+            messages.info(request,'Enter subcategory Name')
+            return redirect('addsubcatagory')
     return render(request, 'ad\page-add-subcatagory.html', {'cat':inst})
 
 
@@ -361,19 +372,23 @@ def custom_sales(request):
     if request.method == 'POST':
         frm = request.POST.get('fdate')
         todt = request.POST.get('tdate')
+    if isinstance(frm,date) and isinstance(todt,date):
         salesreport = Order.objects.filter(date__range = [frm,todt]).order_by('-id')
-    if len(salesreport)>0:
-        context = {
-            'csalesreport':salesreport,
-            'frm':frm,
-            'todt':todt,
-        }
-        return render(request,'ad/page-sales.html',context)
+        if len(salesreport)>0:
+            context = {
+                'csalesreport':salesreport,
+                'frm':frm,
+                'todt':todt,
+            }
+            return render(request,'ad/page-sales.html',context)
 
+        else:
+            messages.error(request,"No Orders")
+            return render(request,'ad/page-sales.html')
     else:
-        messages.error(request,"No Orders")
-        return render(request,'ad/page-sales.html')
-    
+        messages.info(request,'!!Invalid date or date field empty!!')
+        return redirect('salesreport')
+        
         
 
 def export(request,dates):
@@ -435,9 +450,20 @@ def add_coupon(request):
     if request.method == 'POST':
         code = request.POST.get('coupon_code')
         discount = request.POST.get('discount')
-        inst = coupon(code=code,discount=discount)
-        inst.save()
-        return redirect('coupon')
+        if len(code)==0:
+            messages.info(request,'!!Enter Coupon code!!')
+            return redirect('addcoupon')
+        elif len(discount)==0:
+            messages.info(request,'!!Enter Discount!!')
+            return redirect('addcoupon')
+        else:
+            if not coupon.objects.filter(code=code):
+                inst = coupon(code=code,discount=discount)
+                inst.save()
+                return redirect('coupon')
+            else:
+                messages.info(request,'Coupon already exists')
+                return redirect('addcoupon')
     return render(request, 'ad/page-add-coupon.html')
 
 
@@ -455,9 +481,17 @@ def add_product_offer(request):
         name = request.POST.get('product_name')
         product = products.objects.get(name = name)
         offer = int(request.POST.get('offer'))
-        inst2 = productoffer(product=product, offer=offer)
-        inst2.save()
-        return redirect('offers')
+        if offer < 90 and offer != 0:
+            try:
+                inst2 = productoffer(product=product, offer=offer)
+                inst2.save()
+            except:
+                messages.info(request,'The product already has an offer')
+                return redirect('add_product_offer')
+            return redirect('offers')
+        else:
+            messages.info(request,'Enter discount percentage less than 90%')
+            return redirect('add_product_offer')
     return render(request,'ad/page-add-product-offer.html',{'products':inst})
 
 def delete_product_offer(request,id):
@@ -473,9 +507,17 @@ def add_catagory_offer(request):
         name = request.POST.get('catagory_name')
         catagory = catagories.objects.get(catagory_name=name)
         offer = int(request.POST.get('offer'))
-        inst2 = catagoryoffer(category=catagory,offer=offer)
-        inst2.save()
-        return redirect('offers')
+        if offer < 90 and offer!=0:
+            try:
+                inst2 = catagoryoffer(category=catagory,offer=offer)
+                inst2.save()
+            except:
+                messages.info(request,'Category offer already exists')
+                return redirect('add_catagory_offer')
+            return redirect('offers')
+        else:
+            messages.info(request,'Enter discount percentage less than 90%')
+            return redirect('add_catagory_offer')
     return render(request,'ad/page-add-catagory-offer.html',{'catagory':inst})
 
 def delete_catagory_offer(request, id):
