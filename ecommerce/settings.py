@@ -88,13 +88,16 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES={
-   'default':{
-      'ENGINE':'django.db.backends.postgresql',
-      'NAME':os.environ.get('DATABASE_NAME'),
-      'USER':os.environ.get('DATABASE_USERNAME'),
-      'PASSWORD':os.environ.get('DATABASE_PASSWORD')
-   }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ecommerce',
+        'USER': 'kevin',
+        'PASSWORD': '9895',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 
