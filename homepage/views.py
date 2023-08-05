@@ -7,7 +7,8 @@ from userprofile .models import Account,Guest
 def home(request):
     if 'username' not in request.session:
         try:
-            guest = Guest.objects.get(name='guest')
+            guest = Guest.objects.create(name='guest')
+            guest.save()
         except:
             guest = Guest.objects.create(name='guest')
             guest.save()
