@@ -9,8 +9,8 @@ def home(request):
         try:
             guest = Guest.objects.get(name='guest')
         except:
-            guest = Guest(name='guest')
-        guest.save()
+            guest = Guest.objects.create(name='guest')
+            guest.save()
     obj= products.objects.all()[:9]
     obj3 = catagories.objects.order_by('catagory_name')
     obj4 = sub_catagories.objects.order_by('subcatagory_name')
