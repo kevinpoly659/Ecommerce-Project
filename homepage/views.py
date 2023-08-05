@@ -5,13 +5,13 @@ from catagory .models import catagories, brands, sub_catagories
 from userprofile .models import Account,Guest
 
 def home(request):
-    if 'username' not in request.session:
-        try:
-            guest = Guest.objects.create(name='guest')
-            guest.save()
-        except:
-            guest = Guest.objects.create(name='guest')
-            guest.save()
+    # if 'username' not in request.session:
+    #     try:
+    #         guest = Guest.objects.create(name='guest')
+    #         guest.save()
+    #     except:
+    #         guest = Guest.objects.create(name='guest')
+    #         guest.save()
     obj= products.objects.all()[:9]
     obj3 = catagories.objects.order_by('catagory_name')
     obj4 = sub_catagories.objects.order_by('subcatagory_name')
